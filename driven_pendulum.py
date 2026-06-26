@@ -65,6 +65,11 @@ class DrivenPendulum:
         theta :     float   current angle from the downward vertical [rad]
         theta_dot : float   current angular speed (theta_dot)        [rad/s]
         t     :     float   time                                     [s]
+
+        Returns
+        -------
+        theta_ddot, current angular accelration [rad/s^2]
+        
         """
         # calculate each component of the EoM
         natural = -(self.g / self.L) * math.sin(theta)
@@ -98,7 +103,9 @@ class DrivenPendulum:
 
             theta(t) = Theta * sin(w*t - phi)
 
-        Returns the steady-state angle and angular speed at time t.
+        Returns 
+        -------
+        the steady-state angle and angular speed at time t.
 
         """
         w0_sq = self.g / self.L
@@ -165,6 +172,20 @@ class DrivenPendulum:
 
         return times, thetas, theta_dots
 
+    def angular_acceleration_series(self, times, thetas, theta_dots):
+        """Angular acceleration (theta_ddot) at each sampled point of a run.
+
+        Re-evaluates the EoM for the stored state, so the explicit time
+        dependence of the drive term is handled by pairing each theta/theta_dot
+        with its own time. Intended to be fed the lists returned by simulate().
+
+        Returns
+        -------
+        theta_ddots : list, one theta_ddot [rad/s^2] per sample.
+        """
+        return [self.angular_acceleration(theta, theta_dot, t)
+                for t, theta, theta_dot in zip(times, thetas, theta_dots)]
+
 
 
 
@@ -180,6 +201,8 @@ if __name__ == "__main__":
     theta_lin, omega_lin = pendulum.small_angle_state(t)
     print(f"small-angle theta(t)   = {theta_lin:.4f} rad")
 
-    times, thetas, omegas = pendulum.simulate(theta0=0.0, theta_dot0=0.0, t_end=10.0, dt=1e-3)
+    times, thetas, theta_dots = pendulum.simulate(theta0=0.0, theta_dot0=0.0, t_end=10.0, dt=1e-3)
+    theta_ddots = pendulum.angular_acceleration_series(times, thetas, theta_dots)
     print(f"numerical theta(t={times[-1]:.1f}) = {thetas[-1]:.4f} rad "
           f"(over {len(times)} samples)")
+    print(f"numerical theta_ddot(t={times[-1]:.1f}) = {theta_ddots[-1]:.4f} rad/s^2")
