@@ -12,10 +12,10 @@ A pendulum of length L and mass m hangs from a pivot that is driven horizontally
 >
 
 Using baseline values:
-> L = 1.0 m
-> g = 9.81 m/s²
-> m = 1.0 kg
-> b = 0.5 s⁻¹
+- L = 1.0 m
+- g = 9.81 m/s²
+- m = 1.0 kg
+- b = 0.5 s⁻¹
 
 And exploring the drive amplitude (A) and the frequency (ω).
 
@@ -28,7 +28,7 @@ And exploring the drive amplitude (A) and the frequency (ω).
 | [analysis_plotting_helpers.py](analysis_plotting_helpers.py) | Plotting helpers that run a simulation and save a figure (pivot motion, full dynamics, parameter sweeps, RK4 vs small-angle). |
 | [main.py](main.py) | Defines the parameter search space and drives the helpers to produce the full set of figures. |
 
-Each file is documented with module and method docstrings — read those for the detail.
+Each file is documented with module and method docstrings. Read those for more detail.
 
 
 ### Setup (uv)
