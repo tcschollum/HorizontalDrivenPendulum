@@ -4,10 +4,6 @@ Model: a simple pendulum of length L and mass m whose pivot is driven
 horizontally according to x_p(t) = A * sin(w * t).
 
 Let theta be the angle of the rod measured from the downward vertical.
-The mass position is:
-    x(t) = x_p(t) + L * sin(theta)
-    y(t) =        - L * cos(theta)
-
 Let "_dot" refer to the first derivative,a nd "_ddot" refer to the second derivative.
 
 With a linear damping term b * theta_dot, the equation of motion is:
@@ -55,6 +51,34 @@ class DrivenPendulum:
         return -self.A * self.w ** 2 * math.sin(self.w * t)
 
     # ------------------------------------------------------------------ #
+    # Mass position
+
+    # Note these are also derived:
+    # The mass position is:
+    #       x(t) = x_p(t) + L * sin(theta)
+    #       y(t) =        - L * cos(theta)
+    # ------------------------------------------------------------------ #
+    def get_mass_position(self, theta, t):
+        """Cartesian position (x, y) of the mass at the end of the pendulum.
+
+        Uses the geometry from the module docstring:
+            x(t) = x_p(t) + L * sin(theta)
+            y(t) =        - L * cos(theta)
+
+        Parameters
+        ----------
+        theta : float   angle from the downward vertical [rad]
+        t     : float   time [s] (sets the pivot position x_p)
+
+        Returns
+        -------
+        (x, y) : mass position [m], with y < 0 below the pivot.
+        """
+        x = self.get_pivot_position(t) + self.L * math.sin(theta)
+        y = -self.L * math.cos(theta)
+        return x, y
+
+    # ------------------------------------------------------------------ #
     # Equation of Motion, EoM (exact, non-linear ODE right-hand side)
     # ------------------------------------------------------------------ #
     def angular_acceleration(self, theta, theta_dot, t):
@@ -69,7 +93,7 @@ class DrivenPendulum:
         Returns
         -------
         theta_ddot, current angular accelration [rad/s^2]
-        
+
         """
         # calculate each component of the EoM
         natural = -(self.g / self.L) * math.sin(theta)
