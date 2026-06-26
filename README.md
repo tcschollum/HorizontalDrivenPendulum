@@ -49,3 +49,11 @@ uv run main.py
 ```
 
 This runs all the simulations and writes the figures to a `figures/` directory (created if it doesn't exist). Progress is printed to the console as each figure is saved.
+
+
+
+### Further work
+
+Some things that could be explored in future: 
+- position of pendulum bob in space (in terms of x, y, and t)
+- making prettier plots, and potentially more interactivity (hover tooltips or sliders), maybe with plotly.
