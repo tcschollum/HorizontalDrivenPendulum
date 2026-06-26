@@ -40,6 +40,13 @@ def _label(p):
     return f"A={p.A:g} m, w={p.w:g} rad/s, L={p.L:g} m"
 
 
+def _legend_outside(ax):
+    """Place the legend just outside the axes (top-right) so it never sits on
+    top of the data. _save uses bbox_inches='tight', so the saved figure grows
+    to include the legend rather than clipping it."""
+    ax.legend(loc="upper left", bbox_to_anchor=(1.02, 1.0), fontsize="small")
+
+
 def _slug(p):
     """Filename-safe parameter string, e.g. 'A0p1_w4_L1'."""
     fmt = lambda v: f"{v:g}".replace(".", "p")
@@ -87,7 +94,7 @@ def plot_pivot_position(pendulums, t_end=10.0, n=2000, filename="pivot_position.
     ax.set_xlabel("time t [s]")
     ax.set_ylabel("pivot position $x_p$ [m]")
     ax.grid(True, alpha=0.3)
-    ax.legend(fontsize="small")
+    _legend_outside(ax)
     return _save(fig, filename)
 
 
@@ -157,7 +164,7 @@ def plot_dynamics_sweep(pendulums, title, filename, theta0=0.0, theta_dot0=0.0,
 
     for ax in axes:
         ax.grid(True, alpha=0.3)
-    axes[0].legend(fontsize="small")
+    _legend_outside(axes[0])
     return _save(fig, filename)
 
 
@@ -198,7 +205,7 @@ def plot_method_comparison(pendulum, theta0=0.0, theta_dot0=0.0, t_end=30.0,
 
     for ax in axes:
         ax.grid(True, alpha=0.3)
-        ax.legend(fontsize="small")
+        _legend_outside(ax)
 
     if filename is None:
         filename = f"comparison_{_slug(pendulum)}.png"

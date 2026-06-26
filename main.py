@@ -33,7 +33,7 @@ L0 = 1.0   # m
 # --------------------------------------------------------------------- #
 THETA0     = 0.0    # rad,   initial angle (hanging straight down)
 THETA_DOT0 = 0.0    # rad/s, initially at rest
-T_END      = 30.0   # s,     long enough for the damped transient to decay
+T_END      = 60.0   # s,     long window so the damped transient -> steady state is clear
 DT         = 1e-3   # s,     RK4 time step
 # --------------------------------------------------------------------- #
 
