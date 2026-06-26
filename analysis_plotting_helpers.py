@@ -18,8 +18,17 @@ matplotlib.use("Agg")  # non-interactive backend: render straight to file
 import matplotlib.pyplot as plt
 import numpy as np
 
+from driven_pendulum import DrivenPendulum
+
 
 FIGURE_DIR = "figures"
+
+# Caption stamped on every figure: names the model and the fixed baselines.
+# g and b are read from the class so the caption tracks any change there.
+MODEL_CAPTION = (
+    "Model: horizontally driven, damped pendulum  "
+    f"(g={DrivenPendulum.g:g} m/s$^2$, b={DrivenPendulum.b:g} s$^{{-1}}$)"
+)
 
 
 # ---------------------------------------------------------------------- #
@@ -27,6 +36,9 @@ FIGURE_DIR = "figures"
 # ---------------------------------------------------------------------- #
 def _save(fig, filename):
     """Save a figure into FIGURE_DIR and close it. Returns the path."""
+    # Caption below the figure; bbox_inches='tight' grows the canvas to fit it.
+    fig.text(0.5, -0.01, MODEL_CAPTION, ha="center", va="top",
+             fontsize="small", style="italic", color="gray")
     os.makedirs(FIGURE_DIR, exist_ok=True)
     path = os.path.join(FIGURE_DIR, filename)
     fig.savefig(path, dpi=150, bbox_inches="tight")
